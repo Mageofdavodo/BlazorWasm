@@ -1,0 +1,51 @@
+﻿@page "/login"
+@using MudWasm.Client.Authentication
+@using MudWasm.Shared
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+
+<EditForm Model="@_request" OnValidSubmit="HandleLogin">
+    <MudTextField T="string" @bind-Value="_request.Username" Label="Username" Required />
+    <MudTextField T="string" @bind-Value="_request.Password" Label="Password" InputType="@PasswordInput" 
+        Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ToggleShowPassword" Required />
+    <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" >Login</MudButton>
+</EditForm>
+
+@code {
+
+
+    private LoginRequest _request = new();
+
+    private async Task HandleLogin(EditContext editContext)
+    {
+        if (editContext.Model is LoginRequest request)
+        {
+            var session = await AuthService.Login(request);
+            if (session is not null)
+                NavigationManager.NavigateTo("/");
+            else
+                Console.WriteLine($"{request.Username}, {request.Password}");
+        }
+    }
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void ToggleShowPassword()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using MudWasm.Client.Authentication
+
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <AuthorizeView Roles="User, Admin">
+        <Authorized>
+        <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+    
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
+</MudNavMenu>
+

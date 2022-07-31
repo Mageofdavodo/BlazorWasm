@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using MudWasm.Client.Authentication
+
+@inherits LayoutComponentBase
+
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool"/>
+        
+        <div class="d-flex">
+            <AuthorizeView>
+                <Authorized>
+                    <MudText Typo="Typo.button" class="align-self-center mr-6">You are signed in as; @context.User.Identity?.Name</MudText>
+                    <MudDivider Vertical="true" FlexItem="true" />
+                    <MudButton OnClick="HandleLogout" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.Logout">Logout</MudButton>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Href="login" Color="Color.Inherit" EndIcon="@Icons.Material.Filled.Login">Login</MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">MudWasm</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _isDarkMode;
+
+
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+        private async Task HandleLogout()
+    {
+            await AuthService.Logout();
+            NavigationManager.NavigateTo("/");
+    }
+}
