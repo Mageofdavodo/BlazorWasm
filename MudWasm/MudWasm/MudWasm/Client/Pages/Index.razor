@@ -1,9 +1,32 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
 
 @attribute [Authorize]
 <PageTitle>Index</PageTitle>
+<div class="mx-8">
+    <MudGrid Justify="Justify.FlexStart">
+     @foreach (var item in items)
+            {
+        <MudItem xs="6" xl="3">
+            <MudButton OnClick="@HandleMenuItemClick" Variant="Variant.Filled" FullWidth Style="height: 15rem">
+                <div class="d-flex flex-column align-center">
+                    <MudIcon Icon="@Icons.Filled.AdfScanner" Style="font-size: 4rem;"/> 
+                    <MudText Typo="Typo.h5" class="">@item</MudText>
+                </div>
+            </MudButton>
+        </MudItem>
+    }
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+</MudGrid>
+</div>
+
+
+@code{
+    private List<string> items = new() { "Hello", "yes", "this", "works?", "Hello", "yes", "this", "works?","Hello", "yes", "this", "works?" ,"Hello", "yes", "this", "works?"  };
+
+    private void HandleMenuItemClick()
+    {
+        NavigationManager.NavigateTo("/counter");
+    }
+}
