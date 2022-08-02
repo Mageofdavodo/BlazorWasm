@@ -1,0 +1,36 @@
+﻿@page "/counter"
+@using MudWasm.Client.Navigation
+@inherits BasePageComponent
+@inject CounterStateContainer CounterState
+
+<PageTitle>Counter</PageTitle>
+
+<MudBreadcrumbs Items="GetBreadcrumbItems()"/>
+<MudGrid Justify="Justify.Center">
+    <MudItem Class="align-center" xs="3">
+        <MudPaper Class="pa-8 ma-2 d-flex flex-column" Outlined="true">
+            <MudText Align="Align.Center" Typo="Typo.h3" GutterBottom="true">Counter</MudText>
+            <MudText Align="Align.Center" Typo="Typo.h1" Class="mb-4">@CounterState.Count</MudText>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+            <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+            <MudLink Href="/counter/advanced">
+                <MudText Align="Align.Center" Class="mb-4">Click her for advanced</MudText>
+            </MudLink>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    private void IncrementCount()
+    {
+        CounterState.Count++;
+    }
+
+    protected override void OnInitialized()
+    {
+        Title = "Counter";
+        base.OnInitialized();
+    }
+}

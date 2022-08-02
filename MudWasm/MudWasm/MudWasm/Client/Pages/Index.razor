@@ -1,9 +1,10 @@
-﻿@page "/"
-@using Microsoft.AspNetCore.Authorization
-@inject NavigationManager NavigationManager
+﻿@using Microsoft.AspNetCore.Authorization
+@using MudWasm.Client.Navigation
 
-@attribute [Authorize]
-<PageTitle>Index</PageTitle>
+@page "/"
+@inherits BasePageComponent
+
+<PageTitle>@Title</PageTitle>
 <div class="mx-8">
     <MudGrid Justify="Justify.FlexStart">
      @foreach (var item in items)
@@ -12,7 +13,7 @@
             <MudButton OnClick="@HandleMenuItemClick" Variant="Variant.Filled" FullWidth Style="height: 15rem">
                 <div class="d-flex flex-column align-center">
                     <MudIcon Icon="@Icons.Filled.AdfScanner" Style="font-size: 4rem;"/> 
-                    <MudText Typo="Typo.h5" class="">@item</MudText>
+                    <MudText Typo="Typo.h5">@item</MudText>
                 </div>
             </MudButton>
         </MudItem>
@@ -25,8 +26,11 @@
 @code{
     private List<string> items = new() { "Hello", "yes", "this", "works?", "Hello", "yes", "this", "works?","Hello", "yes", "this", "works?" ,"Hello", "yes", "this", "works?"  };
 
-    private void HandleMenuItemClick()
+    private void HandleMenuItemClick() => NavigationManager.NavigateTo("/counter");
+
+    protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo("/counter");
+        Title = "Dashboard";
+        base.OnInitialized();
     }
 }

@@ -6,6 +6,9 @@
 
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <span>Your spinner goes here</span>
+                </Authorizing>
                 <NotAuthorized>
                     <LoginRedirect />
                  </NotAuthorized>
